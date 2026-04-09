@@ -1,11 +1,11 @@
 ---
 name: dian-integration
-description: Configura, valida y adopta facturacion-dian-kit como API HTTP de alto nivel para facturacion electronica DIAN. Use when Codex needs to help a team integrate the public API from an ERP, POS or backend, prepare environment variables and certificates, validate request payloads, explain DIAN rejections, or guide habilitacion without using production secrets.
+description: Configura, valida y adopta facturacion-dian-api como API HTTP de alto nivel para facturacion electronica DIAN. Use when Codex needs to help a team integrate the public API from an ERP, POS or backend, prepare environment variables and certificates, validate request payloads, explain DIAN rejections, or guide habilitacion without using production secrets.
 ---
 
 # DIAN Integration
 
-Read this skill when helping a team integrate the public API of `facturacion-dian-kit`.
+Read this skill when helping a team integrate the public API of `facturacion-dian-api`.
 
 ## Start here
 
@@ -16,7 +16,7 @@ Read this skill when helping a team integrate the public API of `facturacion-dia
 
 ## Workflow
 
-1. Confirm the caller will integrate against the public HTTP API of `facturacion-dian-kit`.
+1. Confirm the caller will integrate against the public HTTP API of `facturacion-dian-api`.
 2. Normalize business data into the official blocks:
    `document`, `issuer`, `buyer`, `resolution`, `totals`, `line_items`, `references`, `submission_options`.
 3. Validate runtime DIAN inputs before debugging payload semantics:
@@ -27,6 +27,6 @@ Read this skill when helping a team integrate the public API of `facturacion-dia
 ## Guardrails
 
 - Do not ask users to paste private certificates or secrets into chat.
-- Do not present `facturacion-dian-kit` as an SDK or language-specific library.
+- Do not present `facturacion-dian-api` as an SDK or language-specific library.
 - Do not recommend production use of demo identifiers, test-set ids, or placeholder issuer metadata.
 - If DIAN rejects a document functionally, explain the likely payload area involved and the next verification step.

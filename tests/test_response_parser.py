@@ -1,8 +1,8 @@
-﻿"""Tests for DIAN response interpretation helpers."""
+"""Tests for DIAN response interpretation helpers."""
 
 import base64
 
-from facturacion_dian_kit.core.dian.response_parser import (
+from facturacion_dian_api.core.dian.response_parser import (
     DianResponse,
     parse_get_acquirer_response,
     parse_get_numbering_range_response,

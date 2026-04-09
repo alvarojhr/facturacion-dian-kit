@@ -33,25 +33,25 @@ mypy_path = [
 
 [[tool.mypy.overrides]]
 module = [
-    "facturacion_dian_kit.core.signing.xades",
+    "facturacion_dian_api.core.signing.xades",
 ]
 ignore_errors = true
 
 [[tool.mypy.overrides]]
 module = [
-    "facturacion_dian_kit.core.dian.envelope",
-    "facturacion_dian_kit.core.signing.ws_security",
-    "facturacion_dian_kit.core.xml.attached_document_builder",
-    "facturacion_dian_kit.core.xml.common",
-    "facturacion_dian_kit.core.xml.credit_note_builder",
-    "facturacion_dian_kit.core.xml.debit_note_builder",
-    "facturacion_dian_kit.core.xml.invoice_builder",
+    "facturacion_dian_api.core.dian.envelope",
+    "facturacion_dian_api.core.signing.ws_security",
+    "facturacion_dian_api.core.xml.attached_document_builder",
+    "facturacion_dian_api.core.xml.common",
+    "facturacion_dian_api.core.xml.credit_note_builder",
+    "facturacion_dian_api.core.xml.debit_note_builder",
+    "facturacion_dian_api.core.xml.invoice_builder",
 ]
 disable_error_code = ["arg-type", "assignment", "call-overload", "unused-ignore"]
 
 [tool.coverage.run]
 branch = true
 source = [
-    "facturacion_dian_kit.core",
-    "facturacion_dian_kit.server",
+    "facturacion_dian_api.core",
+    "facturacion_dian_api.server",
 ]

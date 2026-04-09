@@ -85,7 +85,7 @@ def validate_skill(skill_dir: Path) -> None:
             f"{expected_skill_ref}"
         )
 
-    expected_repo_name = "facturacion-dian-kit"
+    expected_repo_name = "facturacion-dian-api"
     for key in ("description",):
         if expected_repo_name not in frontmatter[key]:
             raise ValueError(f"SKILL.md {key} must mention {expected_repo_name}")

@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -88,7 +91,7 @@ jobs:
 
       - name: Build Docker image
         if: steps.changes.outputs.docs_only != 'true'
-        run: docker build -t facturacion-dian-kit .
+        run: docker build -t facturacion-dian-api .
 
       - name: Gitleaks
         if: steps.changes.outputs.docs_only != 'true'

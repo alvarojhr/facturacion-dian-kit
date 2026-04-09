@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible defect in facturacion-dian-kit
+about: Report a reproducible defect in facturacion-dian-api
 title: "[Bug] "
 labels: bug
 assignees: ""

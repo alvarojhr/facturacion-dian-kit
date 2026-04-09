@@ -1,11 +1,11 @@
 [project]
-name = "facturacion-dian-kit-server"
+name = "facturacion-dian-api-server"
 version = "0.1.0a0"
-description = "FastAPI HTTP server for facturacion-dian-kit"
+description = "FastAPI HTTP server for facturacion-dian-api"
 license = {text = "Apache-2.0"}
 requires-python = ">=3.12"
 dependencies = [
-    "facturacion-dian-kit-core==0.1.0a0",
+    "facturacion-dian-api-core==0.1.0a0",
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.34.0",
 ]
@@ -25,5 +25,5 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["facturacion_dian_kit.server*"]
+include = ["facturacion_dian_api.server*"]
 namespaces = true

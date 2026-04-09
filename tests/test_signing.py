@@ -1,4 +1,4 @@
-﻿"""Tests for XAdES-EPES signing module.
+"""Tests for XAdES-EPES signing module.
 
 Uses a self-signed test certificate generated at test time.
 """
@@ -14,19 +14,19 @@ from cryptography import x509
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.x509.oid import NameOID
-from facturacion_dian_kit.core.dian.envelope import build_send_test_set_async_envelope
-from facturacion_dian_kit.core.models import DocumentLine, DocumentSubmitRequest
-from facturacion_dian_kit.core.signing.certificate import (
+from facturacion_dian_api.core.dian.envelope import build_send_test_set_async_envelope
+from facturacion_dian_api.core.models import DocumentLine, DocumentSubmitRequest
+from facturacion_dian_api.core.signing.certificate import (
     CertificateBundle,
     load_certificate,
     reset_certificate_cache,
 )
-from facturacion_dian_kit.core.signing.ws_security import sign_soap_envelope
-from facturacion_dian_kit.core.signing.xades import sign_document, sign_document_xml
-from facturacion_dian_kit.core.xml.credit_note_builder import build_credit_note_xml
-from facturacion_dian_kit.core.xml.debit_note_builder import build_debit_note_xml
-from facturacion_dian_kit.core.xml.invoice_builder import build_invoice_xml
-from facturacion_dian_kit.core.xml.namespaces import (
+from facturacion_dian_api.core.signing.ws_security import sign_soap_envelope
+from facturacion_dian_api.core.signing.xades import sign_document, sign_document_xml
+from facturacion_dian_api.core.xml.credit_note_builder import build_credit_note_xml
+from facturacion_dian_api.core.xml.debit_note_builder import build_debit_note_xml
+from facturacion_dian_api.core.xml.invoice_builder import build_invoice_xml
+from facturacion_dian_api.core.xml.namespaces import (
     NS_CREDIT_NOTE,
     NS_DEBIT_NOTE,
     NS_DS,

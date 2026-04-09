@@ -1,4 +1,4 @@
-﻿"""Tests for UBL 2.1 XML builders.
+"""Tests for UBL 2.1 XML builders.
 
 Validates structure, namespace correctness, and content for:
 - Factura ElectrÃ³nica (Invoice)
@@ -9,19 +9,19 @@ Validates structure, namespace correctness, and content for:
 from __future__ import annotations
 
 import pytest
-from facturacion_dian_kit.core.config import settings
-from facturacion_dian_kit.core.models import DocumentLine, DocumentSubmitRequest
-from facturacion_dian_kit.core.xml.common import _money, _sub, build_invoice_line, build_tax_totals
-from facturacion_dian_kit.core.xml.credit_note_builder import (
+from facturacion_dian_api.core.config import settings
+from facturacion_dian_api.core.models import DocumentLine, DocumentSubmitRequest
+from facturacion_dian_api.core.xml.common import _money, _sub, build_invoice_line, build_tax_totals
+from facturacion_dian_api.core.xml.credit_note_builder import (
     build_credit_note_xml,
     credit_note_to_xml_string,
 )
-from facturacion_dian_kit.core.xml.debit_note_builder import (
+from facturacion_dian_api.core.xml.debit_note_builder import (
     build_debit_note_xml,
     debit_note_to_xml_string,
 )
-from facturacion_dian_kit.core.xml.invoice_builder import build_invoice_xml, invoice_to_xml_string
-from facturacion_dian_kit.core.xml.namespaces import (
+from facturacion_dian_api.core.xml.invoice_builder import build_invoice_xml, invoice_to_xml_string
+from facturacion_dian_api.core.xml.namespaces import (
     NS_CAC,
     NS_CBC,
     NS_CREDIT_NOTE,

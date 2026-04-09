@@ -1,6 +1,6 @@
 # Guia de inicio rapido
 
-Esta guia te deja con `facturacion-dian-kit` corriendo localmente como API HTTP.
+Esta guia te deja con `facturacion-dian-api` corriendo localmente como API HTTP.
 
 ## Requisitos
 
@@ -44,7 +44,7 @@ python -m pytest
 ## 4. Levantar la API
 
 ```powershell
-uvicorn facturacion_dian_kit.server.app:app --host 0.0.0.0 --port 8000
+uvicorn facturacion_dian_api.server.app:app --host 0.0.0.0 --port 8000
 ```
 
 ## 5. Smoke tests
@@ -66,8 +66,8 @@ curl --request POST "http://localhost:8000/api/v1/customers/lookup" `
 ## Docker
 
 ```powershell
-docker build -t facturacion-dian-kit .
-docker run --rm -p 8000:8000 --env-file .env facturacion-dian-kit
+docker build -t facturacion-dian-api .
+docker run --rm -p 8000:8000 --env-file .env facturacion-dian-api
 ```
 
 ## Siguientes pasos

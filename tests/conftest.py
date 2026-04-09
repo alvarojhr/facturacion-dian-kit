@@ -1,4 +1,4 @@
-"""Shared test fixtures for facturacion-dian-kit."""
+"""Shared test fixtures for facturacion-dian-api."""
 
 from __future__ import annotations
 
@@ -6,14 +6,14 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import pytest
-from facturacion_dian_kit.core.dian.client import DianClient
-from facturacion_dian_kit.core.dian.response_parser import (
+from facturacion_dian_api.core.dian.client import DianClient
+from facturacion_dian_api.core.dian.response_parser import (
     AcquirerResponse,
     DianResponse,
     NumberingRange,
     NumberingRangeResponse,
 )
-from facturacion_dian_kit.server.app import app
+from facturacion_dian_api.server.app import app
 from fastapi.testclient import TestClient
 
 
@@ -119,11 +119,11 @@ def stub_live_dian_calls(
     monkeypatch.setattr(DianClient, "get_acquirer", fake_get_acquirer)
     monkeypatch.setattr(DianClient, "get_numbering_range", fake_get_numbering_range)
     monkeypatch.setattr(
-        "facturacion_dian_kit.core.submission.get_certificate_bundle",
+        "facturacion_dian_api.core.submission.get_certificate_bundle",
         lambda: SimpleNamespace(),
     )
     monkeypatch.setattr(
-        "facturacion_dian_kit.core.submission.sign_document_xml",
+        "facturacion_dian_api.core.submission.sign_document_xml",
         lambda xml_root, bundle: b"<Signed>ok</Signed>",
     )
 

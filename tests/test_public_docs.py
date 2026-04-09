@@ -7,7 +7,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from facturacion_dian_kit.server.contracts import (
+from facturacion_dian_api.server.contracts import (
     AttachedDocumentRequest,
     AttachedDocumentResponse,
     BuyerLookupRequest,
@@ -18,7 +18,7 @@ from facturacion_dian_kit.server.contracts import (
     NumberingRangeLookupRequest,
     NumberingRangeLookupResponse,
 )
-from facturacion_dian_kit.server.examples import (
+from facturacion_dian_api.server.examples import (
     ATTACHED_DOCUMENT_REQUEST_EXAMPLE,
     ATTACHED_DOCUMENT_RESPONSE_EXAMPLE,
     BUYER_LOOKUP_REQUEST_EXAMPLE,

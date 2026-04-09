@@ -1,6 +1,6 @@
 # Guia de integracion HTTP
 
-`facturacion-dian-kit` expone una API HTTP estable para integrarse desde ERP, POS y backends.
+`facturacion-dian-api` expone una API HTTP estable para integrarse desde ERP, POS y backends.
 
 Base URL local por defecto:
 

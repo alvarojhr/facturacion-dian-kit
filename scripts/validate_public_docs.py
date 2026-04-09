@@ -100,7 +100,7 @@ def validate_text_content() -> None:
 
     readme = corpus[REPO_ROOT / "README.md"]
     if "API HTTP de alto nivel" not in readme:
-        raise ValueError("README.md must position facturacion-dian-kit as an API HTTP de alto nivel")
+        raise ValueError("README.md must position facturacion-dian-api as an API HTTP de alto nivel")
 
 
 def main() -> int:

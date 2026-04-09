@@ -1,6 +1,6 @@
 # HTTP API
 
-Usa esta referencia cuando el usuario necesite el contrato oficial de la API publica de `facturacion-dian-kit`.
+Usa esta referencia cuando el usuario necesite el contrato oficial de la API publica de `facturacion-dian-api`.
 
 Endpoints oficiales:
 

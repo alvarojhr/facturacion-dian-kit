@@ -1,8 +1,8 @@
-# facturacion-dian-kit
+# facturacion-dian-api
 
 API HTTP de alto nivel para integrar facturacion electronica DIAN en Colombia.
 
-`facturacion-dian-kit` esta pensado para equipos que necesitan conectar un ERP, un POS o cualquier backend propio con DIAN sin depender del lenguaje de programacion del sistema principal. El producto publico es la API HTTP; el resto del repo existe para implementar y operar esa API.
+`facturacion-dian-api` esta pensado para equipos que necesitan conectar un ERP, un POS o cualquier backend propio con DIAN sin depender del lenguaje de programacion del sistema principal. El producto publico es la API HTTP; el resto del repo existe para implementar y operar esa API.
 
 ## Que ofrece
 
@@ -61,14 +61,14 @@ python -m pytest
 4. Inicia la API.
 
 ```powershell
-uvicorn facturacion_dian_kit.server.app:app --host 0.0.0.0 --port 8000
+uvicorn facturacion_dian_api.server.app:app --host 0.0.0.0 --port 8000
 ```
 
 ## Docker
 
 ```powershell
-docker build -t facturacion-dian-kit .
-docker run --rm -p 8000:8000 --env-file .env facturacion-dian-kit
+docker build -t facturacion-dian-api .
+docker run --rm -p 8000:8000 --env-file .env facturacion-dian-api
 ```
 
 ## Ejemplo minimo de envio
@@ -113,7 +113,7 @@ La respuesta publica normaliza estos campos:
 - Docker image;
 - publicacion en GHCR para releases etiquetadas.
 
-No se publica PyPI ni npm porque el producto publico de `facturacion-dian-kit` es la API HTTP.
+No se publica PyPI ni npm porque el producto publico de `facturacion-dian-api` es la API HTTP.
 
 ## Seguridad y uso responsable
 

@@ -1,10 +1,10 @@
-﻿"""Tests for SOAP envelope builder and response parser."""
+"""Tests for SOAP envelope builder and response parser."""
 
 from __future__ import annotations
 
 import base64
 
-from facturacion_dian_kit.core.dian.envelope import (
+from facturacion_dian_api.core.dian.envelope import (
     ACTION_GET_ACQUIRER,
     ACTION_GET_NUMBERING_RANGE,
     ACTION_GET_STATUS,
@@ -23,7 +23,7 @@ from facturacion_dian_kit.core.dian.envelope import (
     build_send_test_set_async_envelope,
     zip_and_encode,
 )
-from facturacion_dian_kit.core.dian.response_parser import DianResponse, parse_send_bill_response
+from facturacion_dian_api.core.dian.response_parser import DianResponse, parse_send_bill_response
 from lxml import etree
 
 ENDPOINT = "https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc"

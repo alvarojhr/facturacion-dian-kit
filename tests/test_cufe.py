@@ -1,4 +1,4 @@
-﻿"""Tests for CUFE, CUDE, and Software Security Code calculation.
+"""Tests for CUFE, CUDE, and Software Security Code calculation.
 
 Verifies SHA-384 hashing logic against known test vectors.
 The exact concatenation format follows DIAN Anexo TÃ©cnico v1.9.
@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import hashlib
 
-from facturacion_dian_kit.core.cufe.calculator import (
+from facturacion_dian_api.core.cufe.calculator import (
     CudeFields,
     CufeFields,
     build_qr_url,

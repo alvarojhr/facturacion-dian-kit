@@ -8,7 +8,7 @@
 - [ ] `python -m ruff check .`
 - [ ] `python -m mypy packages/core/src packages/server/src`
 - [ ] `python -m pytest`
-- [ ] `docker build -t facturacion-dian-kit .`
+- [ ] `docker build -t facturacion-dian-api .`
 
 ## DIAN impact
 

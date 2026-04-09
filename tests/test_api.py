@@ -7,10 +7,10 @@ import io
 import zipfile
 
 import pytest
-from facturacion_dian_kit.core.config import settings
-from facturacion_dian_kit.core.dian.client import DianClient
-from facturacion_dian_kit.core.dian.response_parser import DianResponse
-from facturacion_dian_kit.core.errors import DianTimeoutError
+from facturacion_dian_api.core.config import settings
+from facturacion_dian_api.core.dian.client import DianClient
+from facturacion_dian_api.core.dian.response_parser import DianResponse
+from facturacion_dian_api.core.errors import DianTimeoutError
 from fastapi.testclient import TestClient
 
 
@@ -30,7 +30,7 @@ class TestHealthEndpoint:
         response = client.get("/")
         assert response.status_code == 200
         data = response.json()
-        assert data["service"] == "facturacion-dian-kit API"
+        assert data["service"] == "facturacion-dian-api"
         assert data["version"]
 
 

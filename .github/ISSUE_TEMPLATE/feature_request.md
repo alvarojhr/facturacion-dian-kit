@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Propose a new capability for facturacion-dian-kit
+about: Propose a new capability for facturacion-dian-api
 title: "[Feature] "
 labels: enhancement
 assignees: ""

@@ -1,5 +1,5 @@
 [project]
-name = "facturacion-dian-kit-core"
+name = "facturacion-dian-api-core"
 version = "0.1.0a0"
 description = "Core DIAN invoicing domain, XML, signing, and SOAP integration logic"
 license = {text = "Apache-2.0"}
@@ -20,5 +20,5 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["facturacion_dian_kit.core*"]
+include = ["facturacion_dian_api.core*"]
 namespaces = true
