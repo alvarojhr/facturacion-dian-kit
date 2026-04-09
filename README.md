@@ -1,41 +1,60 @@
 # facturacion-dian-kit
 
-Open toolkit for Colombian DIAN electronic invoicing.
+Toolkit open source para integrar facturación electrónica DIAN en Colombia.
 
-`facturacion-dian-kit` starts as a self-hosted HTTP server backed by a reusable Python core. The repository is intentionally structured to evolve into `core + server + SDKs` without renaming the project later.
+`facturacion-dian-kit` nace como un servicio HTTP self-hosted con un core reutilizable en Python. El repositorio está organizado desde el inicio para evolucionar sin romper su identidad hacia una arquitectura `core + server + SDKs`.
 
-## What is included
+## Qué resuelve
 
-- `packages/core`: DIAN domain logic, UBL builders, CUFE/CUDE, signing, SOAP envelopes, and DIAN response parsing.
-- `packages/server`: FastAPI HTTP server exposing the public API contract.
-- `packages/sdk-python`: reserved for a future Python SDK.
-- `packages/sdk-ts`: reserved for a future TypeScript SDK or generated client.
-- `.agents/skills/dian-integration`: skill and agent metadata focused on kit adoption and troubleshooting.
+Este proyecto busca reducir la fricción técnica de una integración DIAN al concentrar en un solo kit:
 
-## Current scope
+- construcción de XML UBL;
+- cálculo de CUFE y CUDE;
+- firma digital;
+- envelopes SOAP y consumo de servicios DIAN;
+- parsing de respuestas;
+- una API HTTP pública lista para integrarse desde un ERP o cualquier otro sistema.
 
-- Public HTTP API for document submission and status lookups
-- DIAN buyer lookup and numbering range lookup
-- AttachedDocument ZIP generation
-- Docker packaging for self-hosting
+Hoy el primer entregable público no es un SDK. Es un servidor HTTP con un core reusable, pensado para despliegue propio.
 
-This repository is not positioned as a ready-made SDK yet. The first public deliverable is the server and its reusable core.
+## Qué incluye el repositorio
 
-## Quick start
+- `packages/core`: lógica de dominio DIAN, XML, firma, SOAP y parsing.
+- `packages/server`: servidor FastAPI con el contrato HTTP público.
+- `packages/sdk-python`: espacio reservado para un futuro SDK de Python.
+- `packages/sdk-ts`: espacio reservado para un futuro SDK o cliente TypeScript.
+- `.agents/skills/dian-integration`: skill y metadata de agente para adopción, troubleshooting y habilitación.
 
-1. Copy the environment template.
+## Alcance actual
+
+- envío de documentos electrónicos a DIAN;
+- consulta de estado por `tracking_id`;
+- generación de `AttachedDocument` en ZIP;
+- consulta de adquiriente;
+- consulta de rangos de numeración;
+- empaquetado con Docker para self-hosting.
+
+## A quién le sirve
+
+- equipos que ya tienen un ERP, POS o backend propio y necesitan conectarse con DIAN;
+- implementadores que prefieren correr el servicio en su propia infraestructura;
+- equipos técnicos que quieren una base abierta antes de invertir en un SDK más formal.
+
+## Inicio rápido
+
+1. Copia la plantilla de entorno.
 
 ```powershell
 Copy-Item .env.example .env -Force
 ```
 
-2. Install the packages in editable mode.
+2. Instala los paquetes en modo editable.
 
 ```powershell
 python -m pip install -e ./packages/core -e "./packages/server[dev]"
 ```
 
-3. Run checks.
+3. Ejecuta las validaciones locales.
 
 ```powershell
 python scripts/validate_skill.py
@@ -44,7 +63,7 @@ python -m mypy packages/core/src packages/server/src
 python -m pytest
 ```
 
-4. Start the API.
+4. Inicia la API.
 
 ```powershell
 uvicorn facturacion_dian_kit.server.app:app --host 0.0.0.0 --port 8000
@@ -57,9 +76,9 @@ docker build -t facturacion-dian-kit .
 docker run --rm -p 8000:8000 --env-file .env facturacion-dian-kit
 ```
 
-## Public API
+## API pública inicial
 
-Initial endpoints:
+Endpoints disponibles:
 
 - `POST /api/v1/documents/submissions`
 - `GET /api/v1/documents/submissions/{tracking_id}`
@@ -68,11 +87,11 @@ Initial endpoints:
 - `POST /api/v1/numbering-ranges/lookup`
 - `GET /health`
 
-Example submission payload:
+Ejemplo de payload para envío:
 
 ```json
 {
-  "client_reference": "client-ref-001",
+  "client_reference": "cliente-ref-001",
   "document": {
     "number": "FDK000001",
     "type": "FACTURA_ELECTRONICA",
@@ -105,30 +124,66 @@ Example submission payload:
     }
   ],
   "submission_options": {
-    "software_id": "software-123",
-    "software_pin": "12345",
-    "technical_key": "fc8eac422eba16e22ffd8c6f94b3f40a6e38162c",
-    "test_set_id": "test-set-123"
+    "software_id": "software-demo",
+    "software_pin": "pin-demo",
+    "technical_key": "technical-key-demo",
+    "test_set_id": "test-set-demo"
   }
 }
 ```
 
-## Operational policy
+La respuesta pública normaliza estos campos:
 
-- `422` for invalid payloads
-- `503` for missing or invalid local configuration such as certificate or required DIAN settings
-- `502` for non-timeout upstream DIAN transport failures
-- `504` for DIAN timeouts
-- `200` when DIAN processed the request and returned a functional acceptance or rejection
+- `submission_id`
+- `tracking_id`
+- `document_key`
+- `qr_url`
+- `status`
+- `messages`
+- `dian_response`
+- `artifacts` opcional
+- `client_reference`
 
-## Development notes
+## Política operativa
 
-- Do not commit certificates, private keys, `.env` files, or real DIAN credentials.
-- Keep the public API contract stable inside `packages/server`.
-- Use `packages/core` for reusable logic and avoid reintroducing ERP-specific terminology there.
+- `422` cuando el payload es inválido;
+- `503` cuando falta configuración local o el certificado no está disponible o es inválido;
+- `502` cuando falla la comunicación con DIAN sin ser timeout;
+- `504` cuando DIAN no responde a tiempo;
+- `200` cuando DIAN procesa la solicitud y devuelve aceptación o rechazo funcional.
+
+## Skill de integración
+
+El repo incluye un skill de apoyo en:
+
+- `.agents/skills/dian-integration`
+
+Ese skill está pensado para ayudar a:
+
+- mapear datos de un ERP al contrato público;
+- revisar variables de entorno;
+- explicar rechazos DIAN;
+- guiar pruebas de habilitación;
+- acompañar la adopción del kit sin depender de credenciales reales en el repositorio.
+
+## Seguridad y uso responsable
+
+- No subas certificados, llaves privadas, archivos `.env` ni credenciales reales de DIAN.
+- No uses valores de ejemplo en producción.
+- Mantén estable el contrato público dentro de `packages/server`.
+- Evita reintroducir terminología o contratos acoplados a un ERP específico dentro de `packages/core`.
+
+## Estado del proyecto
+
+`facturacion-dian-kit` está en una etapa temprana orientada a hardening. La meta es estabilizar primero el servidor y el core, y luego extraer superficies de SDK sin comprometer el contrato público.
 
 ## Roadmap
 
-- Harden the server contract toward `1.0.0`
-- Extract reusable SDK surfaces from `packages/core`
-- Publish Python and TypeScript SDKs once the HTTP and core interfaces stabilize
+- endurecer el contrato HTTP hacia `1.0.0`;
+- consolidar el core reusable;
+- publicar SDKs oficiales cuando la interfaz se estabilice;
+- mantener el skill y la metadata de agente alineados con la documentación y la API.
+
+## Contribuir
+
+Revisa [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md) y [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) antes de abrir cambios o reportes.
