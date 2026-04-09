@@ -39,6 +39,7 @@ Hoy el primer entregable público no es un SDK. Es un servidor HTTP con un core 
 - equipos que ya tienen un ERP, POS o backend propio y necesitan conectarse con DIAN;
 - implementadores que prefieren correr el servicio en su propia infraestructura;
 - equipos técnicos que quieren una base abierta antes de invertir en un SDK más formal.
+- alternativa a MATIAS API
 
 ## Inicio rápido
 
