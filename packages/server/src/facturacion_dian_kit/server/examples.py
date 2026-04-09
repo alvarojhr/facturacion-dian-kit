@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import base64
 
-DOCUMENT_KEY_EXAMPLE = "0123456789abcdef" * 6
+DOCUMENT_KEY_EXAMPLE = "demo-document-key-not-real"
 SIGNED_XML_BASE64 = base64.b64encode(b"<Signed>ok</Signed>").decode("ascii")
 INVOICE_XML_BASE64 = base64.b64encode(b"<Invoice>demo</Invoice>").decode("ascii")
 ZIP_BASE64_EXAMPLE = base64.b64encode(b"zip-demo").decode("ascii")
@@ -158,7 +158,7 @@ DOCUMENT_SUBMISSION_CREDIT_NOTE_EXAMPLE = {
     ],
     "references": {
         "referenced_document_number": "FDK000001",
-        "referenced_document_key": "abc123def456",
+        "referenced_document_key": "ref-doc-key-demo",
         "referenced_issue_date": "2026-03-12",
         "reason": "Devolucion parcial",
     },
@@ -204,7 +204,7 @@ DOCUMENT_SUBMISSION_DEBIT_NOTE_EXAMPLE = {
     ],
     "references": {
         "referenced_document_number": "FDK000001",
-        "referenced_document_key": "abc123def456",
+        "referenced_document_key": "ref-doc-key-demo",
         "referenced_issue_date": "2026-03-12",
         "reason": "Cobro de intereses",
         "response_code": "1",

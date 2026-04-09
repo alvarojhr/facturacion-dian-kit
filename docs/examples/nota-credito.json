@@ -33,7 +33,7 @@
   ],
   "references": {
     "referenced_document_number": "FDK000001",
-    "referenced_document_key": "abc123def456",
+    "referenced_document_key": "ref-doc-key-demo",
     "referenced_issue_date": "2026-03-12",
     "reason": "Devolucion parcial"
   },
