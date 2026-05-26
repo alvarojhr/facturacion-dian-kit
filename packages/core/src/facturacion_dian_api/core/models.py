@@ -88,10 +88,27 @@ class DocumentSubmitRequest(BaseModel):
 
 
 class SubmissionArtifacts(BaseModel):
-    """Opaque artifacts generated during a successful DIAN interaction."""
+    """Opaque artifacts generated during a successful DIAN interaction.
+
+    ``xml_base64``/``xml_filename`` carry the issuer-signed document XML
+    (factura/NC/ND), which is what carries the CUFE.
+
+    ``application_response_xml_base64``/``application_response_xml_filename``
+    carry the Application Response signed by the DIAN (the timestamped
+    acknowledgement that the document was accepted). The Colombian
+    Resolución 165 requires retaining BOTH artifacts for at least five years,
+    so the caller is expected to persist each one separately when present.
+
+    For habilitación (test-set submissions), DIAN's flow is asynchronous and
+    the AR usually arrives via ``get_status`` rather than on the initial
+    submit response — so the AR fields may be ``None`` on a submit but
+    populated on a subsequent status lookup.
+    """
 
     xml_base64: str | None = None
     xml_filename: str | None = None
+    application_response_xml_base64: str | None = None
+    application_response_xml_filename: str | None = None
 
 
 class DocumentSubmissionResult(BaseModel):

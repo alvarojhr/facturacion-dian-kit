@@ -127,6 +127,72 @@ class TestDocumentSubmit:
         assert response.status_code == 503
         assert "Missing required submission settings" in response.json()["detail"]
 
+    def test_submit_returns_application_response_when_dian_attaches_xml_bytes(
+        self,
+        client: TestClient,
+        sample_invoice_payload: dict,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        """
+        En producción, send_bill_sync devuelve el Application Response
+        firmado por DIAN en XmlBase64Bytes. El microservicio debe exponerlo
+        en application_response_xml_base64 (Resolución 165), junto con el
+        XML firmado por el emisor en xml_base64.
+        """
+        ar_payload = b"<AppResponse>signed-by-dian</AppResponse>"
+
+        async def fake_submit_with_ar(
+            self: DianClient,
+            filename: str,
+            content_b64: str,
+            test_set_id: str | None = None,
+        ) -> DianResponse:
+            del self, filename, content_b64, test_set_id
+            return DianResponse(
+                is_valid=True,
+                status_code="00",
+                status_description="Procesado Correctamente",
+                status_message="Documento aceptado",
+                tracking_id="track-with-ar",
+                xml_bytes=ar_payload,
+            )
+
+        monkeypatch.setattr(DianClient, "send_test_set_async", fake_submit_with_ar)
+        monkeypatch.setattr(DianClient, "send_bill_sync", fake_submit_with_ar)
+
+        response = client.post(
+            "/api/v1/documents/submissions", json=sample_invoice_payload
+        )
+        assert response.status_code == 200
+        artifacts = response.json()["artifacts"]
+        # Ambos artefactos presentes: emisor + DIAN
+        assert artifacts["xml_filename"] == "ws_FDK000001.xml"
+        assert artifacts["xml_base64"] is not None
+        assert base64.b64decode(artifacts["application_response_xml_base64"]) == ar_payload
+        assert artifacts["application_response_xml_filename"] == "ar_FDK000001.xml"
+
+    def test_submit_leaves_application_response_null_when_dian_omits_xml_bytes(
+        self,
+        client: TestClient,
+        sample_invoice_payload: dict,
+    ) -> None:
+        """
+        En habilitación (send_test_set_async) DIAN responde sin el AR — éste
+        llega via GetStatus después. El campo application_response_xml_base64
+        debe quedar en None para que el consumer no persista basura.
+        """
+        # La fixture global stub_live_dian_calls devuelve una DianResponse sin
+        # xml_bytes, lo cual representa el escenario de habilitación asíncrona.
+        response = client.post(
+            "/api/v1/documents/submissions", json=sample_invoice_payload
+        )
+        assert response.status_code == 200
+        artifacts = response.json()["artifacts"]
+        assert artifacts["xml_base64"] is not None  # XML del emisor siempre
+        assert artifacts["xml_filename"] == "ws_FDK000001.xml"
+        assert artifacts["application_response_xml_base64"] is None
+        assert artifacts["application_response_xml_filename"] is None
+
     def test_submit_returns_504_on_dian_timeout(
         self,
         client: TestClient,
@@ -157,11 +223,19 @@ class TestDocumentStatus:
         assert data["tracking_id"] == "some-tracking-id"
         assert data["status"] == "rejected"
 
-    def test_status_returns_xml_artifact_when_available(
+    def test_status_returns_application_response_when_available(
         self,
         client: TestClient,
         monkeypatch: pytest.MonkeyPatch,
     ) -> None:
+        """
+        El XML que devuelve DIAN en GetStatus es el Application Response
+        firmado por la DIAN, no la factura original. Se expone en
+        application_response_xml_base64 (no en xml_base64), para que el
+        consumer lo persista como kind=APPLICATION_RESPONSE alineado con
+        la Resolución 165.
+        """
+
         async def fake_status(self: DianClient, tracking_id: str) -> DianResponse:
             del self
             return DianResponse(
@@ -170,7 +244,7 @@ class TestDocumentStatus:
                 status_description="Processed successfully.",
                 status_message="Document validated.",
                 tracking_id=tracking_id,
-                xml_bytes=b"<Invoice>ok</Invoice>",
+                xml_bytes=b"<AppResponse>ok</AppResponse>",
             )
 
         monkeypatch.setattr(DianClient, "get_status_zip", fake_status)
@@ -179,8 +253,15 @@ class TestDocumentStatus:
         assert response.status_code == 200
         data = response.json()
         assert data["status"] == "accepted"
-        assert base64.b64decode(data["artifacts"]["xml_base64"]) == b"<Invoice>ok</Invoice>"
-        assert data["artifacts"]["xml_filename"] == "status_track-xml.xml"
+        # El AR llega en su propio campo; xml_base64 queda en None porque
+        # no tenemos el documento original del emisor desde GetStatus.
+        assert data["artifacts"]["xml_base64"] is None
+        assert data["artifacts"]["xml_filename"] is None
+        assert (
+            base64.b64decode(data["artifacts"]["application_response_xml_base64"])
+            == b"<AppResponse>ok</AppResponse>"
+        )
+        assert data["artifacts"]["application_response_xml_filename"] == "ar_track-xml.xml"
 
 
 class TestAttachedDocument:
