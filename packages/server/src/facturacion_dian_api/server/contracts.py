@@ -146,10 +146,21 @@ class DocumentSubmissionRequest(BaseModel):
 
 
 class SubmissionArtifactPayload(BaseModel):
-    """Opaque artifacts returned by the server when requested."""
+    """Opaque artifacts returned by the server when requested.
+
+    ``xml_base64``/``xml_filename`` exponen el documento firmado por el
+    emisor (carga el CUFE). ``application_response_xml_base64``/
+    ``application_response_xml_filename`` exponen el Application Response
+    firmado por la DIAN — comprobante con timestamp oficial que la
+    Resolución 165 colombiana exige retener por separado del documento
+    original. Cuando un canal asíncrono (habilitación, GetStatus posterior)
+    aún no devuelve uno de los dos, el campo queda en ``None``.
+    """
 
     xml_base64: str | None = None
     xml_filename: str | None = None
+    application_response_xml_base64: str | None = None
+    application_response_xml_filename: str | None = None
 
 
 class DocumentSubmissionResponse(BaseModel):

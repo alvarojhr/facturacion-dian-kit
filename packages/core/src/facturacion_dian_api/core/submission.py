@@ -187,9 +187,25 @@ class DocumentSubmissionService:
 
         artifacts = None
         if include_xml_artifact:
+            # ``signed_xml`` carries the issuer-signed invoice/NC/ND XML (con CUFE).
+            # ``dian_response.xml_bytes`` (cuando viene) es el Application Response
+            # firmado por la DIAN: el comprobante con timestamp oficial que la
+            # Resolución 165 exige retener por separado. En habilitación el AR
+            # suele llegar via GetStatus en vez de aquí (send_test_set_async es
+            # asíncrono); en ese caso application_response_xml_base64 queda en None.
             artifacts = SubmissionArtifacts(
                 xml_base64=_base64_encode(signed_xml),
                 xml_filename=xml_filename,
+                application_response_xml_base64=(
+                    _base64_encode(dian_response.xml_bytes)
+                    if dian_response.xml_bytes is not None
+                    else None
+                ),
+                application_response_xml_filename=(
+                    f"ar_{document_number}.xml"
+                    if dian_response.xml_bytes is not None
+                    else None
+                ),
             )
 
         return DocumentSubmissionResult(
@@ -220,9 +236,16 @@ class DocumentSubmissionService:
 
         artifacts = None
         if include_xml_artifact and dian_response.xml_bytes is not None:
+            # En GetStatus el XML que devuelve DIAN siempre es el Application
+            # Response firmado por la DIAN (no el documento original del emisor).
+            # Antes lo veníamos exponiendo como ``xml_base64`` con el filename
+            # ``status_<tracking>.xml``, pero eso confundía al cliente — quien
+            # debe persistir el AR en una columna distinta del SIGNED_XML del
+            # emisor. Ahora lo mapeamos al campo correcto para que la semántica
+            # sea consistente con submit_document.
             artifacts = SubmissionArtifacts(
-                xml_base64=_base64_encode(dian_response.xml_bytes),
-                xml_filename=f"status_{tracking_id}.xml",
+                application_response_xml_base64=_base64_encode(dian_response.xml_bytes),
+                application_response_xml_filename=f"ar_{tracking_id}.xml",
             )
 
         return DocumentSubmissionResult(
